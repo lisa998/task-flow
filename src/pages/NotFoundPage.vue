@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-
+  <div>NotFoundPage</div>
 </template>
 
 <style scoped>

@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "DashboardPage"
+  name: "UserMenu"
 }
 </script>
 

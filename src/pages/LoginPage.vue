@@ -1,11 +1,11 @@
 <script>
 export default {
-name: "LoginPage"
+  name: "LoginPage"
 }
 </script>
 
 <template>
-  
+  <div>LoginPage</div>
 </template>
 
 <style scoped>
