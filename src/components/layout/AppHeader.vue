@@ -1,6 +1,20 @@
 <script>
+import UserMenu from "@/components/layout/UserMenu.vue";
+import NotificationDropdown from "@/components/layout/NotificationDropdown.vue";
+
 export default {
   name: "AppHeader",
+  components: {NotificationDropdown, UserMenu},
+  data() {
+    return {
+      isOpenMenu: '',
+    }
+  },
+  methods: {
+    handleOpenMenu(menuName) {
+      this.isOpenMenu = this.isOpenMenu === menuName ? '' : menuName
+    }
+  },
   computed: {
     routeName() {
       const path = this.$route?.path || ''
@@ -8,6 +22,9 @@ export default {
       return segments.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('/')
     },
   },
+  async mounted() {
+    await this.$store.dispatch("notifications/fetchNotifications");
+  }
 }
 </script>
 
@@ -43,12 +60,13 @@ export default {
       <v-spacer></v-spacer>
 
       <div class="d-flex align-center">
-        <v-btn icon>
+        <v-btn icon @click="()=>handleOpenMenu('notification')">
           <v-icon>mdi-bell</v-icon>
         </v-btn>
         <!--  有通知    mdiBellBadge-->
 
-        <v-btn class="d-flex align-center rounded-xl py-3" height="100%" text>
+        <v-btn class="d-flex align-center rounded-xl py-3" height="100%" text
+               @click="()=>handleOpenMenu('user')">
           <v-avatar class="rounded-circle" size="24">
             <img alt="" src="https://picsum.photos/200/200?random"/>
           </v-avatar>
@@ -65,6 +83,8 @@ export default {
     >
       <v-container style="min-height: 100vh">
         <router-view/>
+        <user-menu v-if="isOpenMenu === 'user'"/>
+        <notification-dropdown v-if="isOpenMenu === 'notification'"/>
       </v-container>
     </v-sheet>
   </v-card>

@@ -19,9 +19,18 @@ const router = new VueRouter({
 
 Vue.use(VueRouter)
 
-new Vue({
-    render: h => h(App),
-    router,
-    vuetify,
-    store
-}).$mount('#app')
+async function bootstrap() {
+    const {worker} = await import('@/mocks/browser.js')
+    await worker.start({onUnhandledRequest: 'bypass'})
+
+    new Vue({
+        render: h => h(App),
+        router,
+        vuetify,
+        store
+    }).$mount('#app')
+}
+
+bootstrap()
+
+
