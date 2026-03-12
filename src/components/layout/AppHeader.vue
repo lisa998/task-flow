@@ -29,7 +29,7 @@ export default {
 </script>
 
 <template>
-  <v-card class="overflow-hidden flex-grow">
+  <v-card class="overflow-hidden flex-grow ">
     <v-app-bar
         color="#43a08c"
         dark
@@ -79,9 +79,9 @@ export default {
     <v-sheet
         id="scrolling-techniques-5"
         class="overflow-y-auto"
-        max-height="100vh"
+        max-height="calc(100vh - 128px)"
     >
-      <v-container style="min-height: 100vh">
+      <v-container style="min-height: calc(100vh - 128px)">
         <router-view/>
         <user-menu v-if="isOpenMenu === 'user'"/>
         <notification-dropdown v-if="isOpenMenu === 'notification'"/>
@@ -91,5 +91,4 @@ export default {
 </template>
 
 <style scoped>
-
 </style>

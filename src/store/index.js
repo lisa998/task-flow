@@ -5,6 +5,7 @@ import notifications from "@/store/modules/notifications";
 import projects from "@/store/modules/projects";
 import tasks from "@/store/modules/tasks";
 import ui from "@/store/modules/ui";
+import dashboard from "@/store/modules/dashboard";
 
 Vue.use(Vuex)
 
@@ -15,5 +16,6 @@ export default new Vuex.Store({
         projects,
         tasks,
         ui,
+        dashboard
     }
 })
