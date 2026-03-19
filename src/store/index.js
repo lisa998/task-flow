@@ -6,6 +6,7 @@ import projects from "@/store/modules/projects";
 import tasks from "@/store/modules/tasks";
 import ui from "@/store/modules/ui";
 import dashboard from "@/store/modules/dashboard";
+import toasts from "@/store/modules/toasts";
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
         projects,
         tasks,
         ui,
-        dashboard
+        dashboard,
+        toasts
     }
 })
