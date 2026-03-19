@@ -1,10 +1,11 @@
 <script>
 import AppHeader from "@/components/layout/AppHeader.vue";
 import AppSidebar from "@/components/layout/AppSidebar.vue";
+import ToastList from "@/components/molecules/ToastList.vue";
 
 export default {
   name: "AppLayout",
-  components: {AppSidebar, AppHeader}
+  components: {ToastList, AppSidebar, AppHeader}
 }
 </script>
 
@@ -12,6 +13,7 @@ export default {
   <div class="relative d-flex">
     <app-sidebar class="flex-grow-0"></app-sidebar>
     <app-header class=""></app-header>
+    <ToastList/>
   </div>
 </template>
 

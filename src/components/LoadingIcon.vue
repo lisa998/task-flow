@@ -12,8 +12,8 @@ export default {
 
 <template>
   <div :style="{height: `${size}px`, width: `${size}px`}" class="relative">
-    <v-icon :size="size" :style="{color:'rgba(0,0,0,0.2)'}">mdi-circle-outline</v-icon>
-    <v-icon :size="size" :style="{color:'rgba(0,0,0,0.5)'}" class="rotate-element">mdi-loading</v-icon>
+    <v-icon :size="size" class="icon-track">mdi-circle-outline</v-icon>
+    <v-icon :size="size" class="rotate-element icon-spinner">mdi-loading</v-icon>
   </div>
 </template>
 
@@ -22,6 +22,14 @@ export default {
   position: absolute !important;
   top: 0;
   left: 0;
+}
+
+.icon-track {
+  color: var(--color-overlay-subtle);
+}
+
+.icon-spinner {
+  color: var(--color-overlay-medium);
 }
 
 .rotate-element {

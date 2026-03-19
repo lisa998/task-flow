@@ -1,13 +1,21 @@
 <script>
 import {formatRelativeTime} from "@/utils/dateText";
 import EmptyState from "@/components/molecules/EmptyState.vue";
+import colors from "@/assets/theme/colors.json";
+
+const priorityColors = Object.freeze({
+  urgent: colors["accent-rose"],
+  high: colors["accent-peach"],
+  medium: colors["accent-yellow"],
+  low: "rgba(67, 160, 140, 0.65)",
+});
 
 export default {
   name: "DashboardPage",
   components: {EmptyState},
   data() {
     return {
-      clipsColor: {urgent: '#DDA0AD', high: '#ECA88F', medium: '#EED27A', low: 'rgba(67,160,140,0.65)'}
+      priorityColors,
     }
   },
   methods: {
@@ -81,7 +89,7 @@ export default {
               <span class="text-primary text-md group-hover:underline cursor-pointer">{{ task.title }}</span> --
               <span class="text-text text-sm"> {{ task.project }}</span>
               <v-chip
-                  :color="clipsColor[task.priority]"
+                  :color="priorityColors[task.priority]"
                   class="ml-2"
                   small
                   text-color="white"
@@ -146,7 +154,7 @@ export default {
     right: 10px;
     width: 100px;
     height: 60px;
-    @include bg-circle(40px, #F2C2A4);
+    @include bg-circle(40px, var(--color-accent-peach-soft));
   }
 
   &::after {
@@ -155,12 +163,12 @@ export default {
     left: 10px;
     width: 80px;
     height: 40px;
-    @include bg-circle(40px, #43a08c);
+    @include bg-circle(40px, var(--color-primary));
     animation-delay: 1.5s;
   }
 
   li {
-    color: #43a08c;
+    color: var(--color-primary);
   }
 }
 

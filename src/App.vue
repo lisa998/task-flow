@@ -10,9 +10,6 @@
 
 export default {
   name: 'App',
-
-  components: {},
-
   data: () => ({
     //
   }),
@@ -22,7 +19,8 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
+
 body {
   overflow: hidden;
   height: 100vh;

@@ -1,6 +1,9 @@
 <script>
 import UserMenu from "@/components/layout/UserMenu.vue";
 import NotificationDropdown from "@/components/layout/NotificationDropdown.vue";
+import colors from "@/assets/theme/colors.json";
+
+const headerGradient = `to top right, ${colors["hero-gradient-start"]}, ${colors["hero-gradient-end"]}`;
 
 export default {
   name: "AppHeader",
@@ -8,6 +11,7 @@ export default {
   data() {
     return {
       isOpenMenu: '',
+      headerGradient,
     }
   },
   methods: {
@@ -31,7 +35,7 @@ export default {
 <template>
   <v-card class="overflow-hidden flex-grow ">
     <v-app-bar
-        color="#43a08c"
+        color="primary"
         dark
         fade-img-on-scroll
         prominent
@@ -42,7 +46,7 @@ export default {
     >
       <template v-slot:img="{ props }">
         <v-img
-            gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
+            :gradient="headerGradient"
             v-bind="props"
         ></v-img>
       </template>

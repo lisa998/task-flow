@@ -19,7 +19,7 @@ export default {
 
 <template>
   <v-card
-      class="right-4 top-14"
+      class="right-4 top-14 relative z-50"
       elevation="12"
       style="position: absolute !important;"
       width="256"
