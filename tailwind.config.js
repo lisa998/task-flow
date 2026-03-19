@@ -1,3 +1,5 @@
+const colors = require('./src/assets/theme/colors.json')
+
 module.exports = {
     mode: 'jit',
     purge: ['./public/**/*.html', './src/**/*.vue', './src/**/*.js'],
@@ -5,10 +7,18 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: '#43a08c',
-                primaryLight: '#e0f2f1',
-                title: '#000000DE',
-                text: '#00000099',
+                ...colors,
+                // Opacity variants reference CSS variables (defined in main.css)
+                'primary-soft': 'var(--color-primary-soft)',
+                'primary-muted': 'var(--color-primary-muted)',
+                'text': 'var(--color-text)',
+                'title': 'var(--color-title)',
+                'surface-hover': 'var(--color-surface-hover)',
+                'border-subtle': 'var(--color-border-subtle)',
+                'overlay-subtle': 'var(--color-overlay-subtle)',
+                'overlay-medium': 'var(--color-overlay-medium)',
+                'hero-gradient-start': 'var(--color-hero-gradient-start)',
+                'hero-gradient-end': 'var(--color-hero-gradient-end)',
             }
         },
     },
