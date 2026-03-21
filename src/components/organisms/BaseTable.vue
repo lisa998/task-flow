@@ -13,7 +13,8 @@ export default {
       required: true,
       validator: validateCollection({title: 'string', key: 'string', slot: 'boolean'})
     },
-  }
+  },
+
 }
 </script>
 
@@ -21,7 +22,6 @@ export default {
   <v-card
       elevation="2"
       outlined
-      shaped
   >
     <table class="base-table">
       <thead>
@@ -50,8 +50,16 @@ export default {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  overflow: hidden;
   color: var(--color-title);
+  position: relative;
+  table-layout: fixed;
+
+  thead {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
 
   &__head-row {
     background-color: var(--color-primary-light);
@@ -65,7 +73,7 @@ export default {
   }
 
   &__head-cell {
-    height: 3.25rem;
+    height: 56px;
     border-bottom: 1px solid var(--color-border-subtle);
   }
 
