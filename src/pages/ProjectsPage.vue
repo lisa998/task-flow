@@ -5,6 +5,8 @@ import DialogContainer from "@/components/organisms/DialogContainer.vue";
 import HalfMaskIcon from "@/components/molecules/HalfMaskIcon.vue";
 import ButtonGroup from "@/components/molecules/ButtonGroup.vue";
 import VirtualScroll from "@/components/wrappers/VirtualScroll.vue";
+import ProjectForm from "@/components/organisms/ProjectForm.vue";
+import {Portal} from 'portal-vue'
 
 const statusColor = Object.freeze({
   active: colors["primary"],
@@ -14,16 +16,20 @@ const statusColor = Object.freeze({
 
 const modalType = Object.freeze({
   EDIT: {
-    name: 'edit',
+    name: 'EDIT',
     title: '編輯專案',
   },
   DELETE: {
-    name: 'delete',
+    name: 'DELETE',
     title: '刪除專案',
+  },
+  CREATE: {
+    name: 'CREATE',
+    title: '新增專案',
   }
 })
 
-const projectStatus = Object.freeze({
+export const projectStatus = Object.freeze({
   ACTIVE: 'active',
   ARCHIVED: 'archived',
   COMPLETED: 'completed',
@@ -43,7 +49,7 @@ const projectFilterMapping = Object.freeze({
 
 export default {
   name: "ProjectsPage",
-  components: {VirtualScroll, ButtonGroup, HalfMaskIcon, DialogContainer, BaseTable},
+  components: {ProjectForm, VirtualScroll, ButtonGroup, HalfMaskIcon, DialogContainer, BaseTable, Portal},
   data: () => ({
     columnsConfig: [
       {title: '專案名稱', key: 'name', slot: true},
@@ -52,23 +58,23 @@ export default {
       {title: '操作', key: 'actions', slot: true},
     ],
     statusColor,
-    openModal: null,
+    isOpenModal: null,
     dialogProject: {},
     modalType,
     selectedFilter: 'all',
   }),
   methods: {
-    toggleModal(type, project = {}) {
-      if (this.openModal !== modalType[type].name) {
-        this.openModal = modalType[type].name
-        this.dialogProject = project
-      } else {
-        this.openModal = null
-      }
+    openModal(type, project = {}) {
+      this.isOpenModal = modalType[type].name
+      this.dialogProject = project
+    },
+    closeModal() {
+      this.isOpenModal = null
+      this.dialogProject = {}
     },
     deleteProject(projectId) {
       this.$store.dispatch('projects/delete', projectId)
-      this.openModal = null
+      this.isOpenModal = null
     },
     changeProjectFilter(value) {
       this.selectedFilter = value
@@ -97,6 +103,11 @@ export default {
         action: this.changeProjectFilter,
       }))
     },
+    modalTitle() {
+      if (!this.isOpenModal) return ''
+      const projectName = this.dialogProject?.name ? ': ' + this.dialogProject.name : ''
+      return this.modalType[this.isOpenModal].title + projectName
+    }
   },
   created() {
     const status = this.$route.query.status
@@ -120,12 +131,13 @@ export default {
       <v-btn
           color="primary" elevation="0"
           x-large
-          @click="()=>{}"
+          @click="()=>openModal('CREATE','')"
       >
         <v-icon class="mr-2">mdi-plus-box-multiple</v-icon>
         新增專案
       </v-btn>
     </div>
+
     <VirtualScroll :container-height="480" :items-height="56" :items-length="fetchTable.length">
       <template v-slot="{startIndex, endIndex}">
         <BaseTable :columns-config="columnsConfig" :data="virtualTable(startIndex, endIndex)"
@@ -166,7 +178,7 @@ export default {
                   color="primary"
                   icon
                   text
-                  @click="()=>toggleModal('EDIT',project)"
+                  @click="()=>openModal('EDIT',project)"
               >
                 <v-icon>mdi-pencil-outline</v-icon>
               </v-btn>
@@ -174,7 +186,7 @@ export default {
                   color="rgba(0, 0, 0, 0.5)"
                   icon
                   text
-                  @click="()=>toggleModal('DELETE',project)"
+                  @click="()=>openModal('DELETE',project)"
               >
                 <v-icon>mdi-trash-can</v-icon>
               </v-btn>
@@ -183,21 +195,24 @@ export default {
         </BaseTable>
       </template>
     </VirtualScroll>
-
-    <DialogContainer v-if="openModal=== modalType.EDIT.name" :is-open="openModal=== modalType.EDIT.name"
-                     :title="modalType.EDIT.title + ': ' + dialogProject?.name"
-                     :toggle="()=>toggleModal('EDIT')">
-      <template v-slot:symbol>
-        <HalfMaskIcon icon-name="mdi-file-edit"/>
-      </template>
-      <template v-slot>Form
-        <div class="h-[600px] w-[600px]">123</div>
-      </template>
-    </DialogContainer>
-
-    <DialogContainer v-if="openModal=== modalType.DELETE.name" :is-open="openModal=== modalType.DELETE.name"
-                     :title="modalType.DELETE.title + ': ' + dialogProject?.name"
-                     :toggle="()=>toggleModal('DELETE')">
+    <Portal to="modals">
+      <DialogContainer v-if="isOpenModal=== modalType.EDIT.name|| isOpenModal===modalType.CREATE.name"
+                       :closeModal="closeModal"
+                       :is-open="isOpenModal=== modalType.EDIT.name|| isOpenModal===modalType.CREATE.name"
+                       :title="modalTitle">
+        <template v-slot:symbol>
+          <HalfMaskIcon icon-name="mdi-file-edit"/>
+        </template>
+        <template v-slot>
+          <div class="w-[600px]">
+            <ProjectForm :closeModal="closeModal"/>
+          </div>
+        </template>
+      </DialogContainer>
+    </Portal>
+    <DialogContainer v-if="isOpenModal=== modalType.DELETE.name" :closeModal="closeModal"
+                     :is-open="isOpenModal=== modalType.DELETE.name"
+                     :title="modalType.DELETE.title + ': ' + dialogProject?.name">
       <template v-slot:symbol>
         <HalfMaskIcon icon-name="mdi-delete-alert"/>
       </template>
@@ -214,7 +229,7 @@ export default {
           <v-btn
               elevation="2"
               x-large
-              @click="()=>toggleModal('DELETE')"
+              @click="closeModal"
           >取消
           </v-btn>
         </div>

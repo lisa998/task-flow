@@ -10,7 +10,7 @@ export default {
       type: Boolean,
       required: true
     },
-    toggle: {
+    closeModal: {
       type: Function,
       required: true
     }
@@ -20,7 +20,7 @@ export default {
 
 <template>
   <div class="z-50">
-    <v-overlay :value="isOpen" z-index="5" @click="toggle"></v-overlay>
+    <v-overlay :value="isOpen" z-index="5" @click="closeModal"></v-overlay>
     <v-card
         class="z-50 fixed-center min-w-[400px] fade-in overflow-hidden"
         elevation="2"
@@ -31,7 +31,7 @@ export default {
         <slot name="symbol"></slot>
         <h2 class="text-primary text-xl text-center">{{ title }}</h2>
       </header>
-      <v-btn class="top-2 right-2 btn" icon @click="toggle">
+      <v-btn class="top-2 right-2 btn" icon @click="closeModal">
         <v-icon>mdi-window-close</v-icon>
       </v-btn>
       <div class="divider"></div>
