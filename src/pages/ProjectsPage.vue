@@ -59,18 +59,18 @@ export default {
     ],
     statusColor,
     isOpenModal: null,
-    dialogProject: {},
+    dialogProject: null,
     modalType,
     selectedFilter: 'all',
   }),
   methods: {
-    openModal(type, project = {}) {
+    openModal(type, project = null) {
       this.isOpenModal = modalType[type].name
       this.dialogProject = project
     },
     closeModal() {
       this.isOpenModal = null
-      this.dialogProject = {}
+      this.dialogProject = null
     },
     deleteProject(projectId) {
       this.$store.dispatch('projects/delete', projectId)
@@ -131,7 +131,7 @@ export default {
       <v-btn
           color="primary" elevation="0"
           x-large
-          @click="()=>openModal('CREATE','')"
+          @click="()=>openModal('CREATE')"
       >
         <v-icon class="mr-2">mdi-plus-box-multiple</v-icon>
         新增專案
@@ -197,22 +197,22 @@ export default {
     </VirtualScroll>
     <Portal to="modals">
       <DialogContainer v-if="isOpenModal=== modalType.EDIT.name|| isOpenModal===modalType.CREATE.name"
-                       :closeModal="closeModal"
                        :is-open="isOpenModal=== modalType.EDIT.name|| isOpenModal===modalType.CREATE.name"
-                       :title="modalTitle">
+                       :title="modalTitle"
+                       @close="closeModal">
         <template v-slot:symbol>
           <HalfMaskIcon icon-name="mdi-file-edit"/>
         </template>
         <template v-slot>
           <div class="w-[600px]">
-            <ProjectForm :closeModal="closeModal"/>
+            <ProjectForm :project="dialogProject" @close="closeModal"/>
           </div>
         </template>
       </DialogContainer>
     </Portal>
-    <DialogContainer v-if="isOpenModal=== modalType.DELETE.name" :closeModal="closeModal"
-                     :is-open="isOpenModal=== modalType.DELETE.name"
-                     :title="modalType.DELETE.title + ': ' + dialogProject?.name">
+    <DialogContainer v-if="isOpenModal=== modalType.DELETE.name" :is-open="isOpenModal=== modalType.DELETE.name"
+                     :title="modalType.DELETE.title + ': ' + dialogProject?.name"
+                     @close="closeModal">
       <template v-slot:symbol>
         <HalfMaskIcon icon-name="mdi-delete-alert"/>
       </template>

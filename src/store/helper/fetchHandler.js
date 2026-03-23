@@ -12,6 +12,7 @@ export const withLoading = async (commit, loadingType, fn) => {
     } catch (err) {
         console.error('fetch error:', err);
         commit('setError', err?.message || 'An error occurred');
+        throw err;
     } finally {
         commit('setLoading', {loadingType, loading: false});
     }

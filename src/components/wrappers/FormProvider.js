@@ -1,5 +1,10 @@
 import Vue from "vue";
 
+const FormMessage = Object.freeze({
+    INVALID: '請修正表單中的錯誤後再提交',
+    UNCHANGED: '表單未修改，無需提交',
+})
+
 export default {
     name: "FormProvider",
     props: {
@@ -19,7 +24,8 @@ export default {
             touched: {},
             errors: {},
             isSubmitting: false,
-            fieldRegistry: {}
+            fieldRegistry: {},
+            formMessage: '',
         }
     },
     provide() {
@@ -37,6 +43,7 @@ export default {
         },
         setFieldValue(name, value) {
             Vue.set(this.values, name, value)
+            this.formMessage = ''
         },
         setFieldTouched(name) {
             Vue.set(this.touched, name, true)
@@ -69,8 +76,16 @@ export default {
             return hasErrors
         },
         async handleSubmit() {
-            if (Object.keys(this.errors).length > 0) return
-            if (this.validateAll()) return
+            if (Object.keys(this.errors).length > 0 || this.validateAll()) {
+                this.formMessage = FormMessage.INVALID
+                return
+            }
+
+            if (JSON.stringify(this.values) === JSON.stringify(this.defaultValues)) {
+                this.formMessage = FormMessage.UNCHANGED
+                return
+            }
+
             this.isSubmitting = true
             try {
                 await this.onSubmit(structuredClone(this.values))
@@ -92,8 +107,9 @@ export default {
             isSubmitting: this.isSubmitting,
             handleSubmit: this.handleSubmit,
             reset: this.reset,
+            formMessage: this.formMessage,
         })
-        return h('div', children)
+        return h('form', children)
     }
 }
 

@@ -8,41 +8,48 @@ import {projectStatus} from "@/pages/ProjectsPage.vue";
 export default {
   name: "ProjectForm",
   components: {FormField, FormProvider},
-  data: () => {
-    return {
-      defaultValues: {
-        name: '',
-        description: '',
-        status: 'active',
-      },
-    }
-  },
   props: {
-    closeModal: {
-      type: Function,
-      required: true,
+    project: {
+      type: Object,
+      default: null,
     }
   },
   computed: {
     selectItems() {
       return Object.values(projectStatus)
-    }
+    },
+    defaultValues() {
+      return {
+        name: this.project?.name ?? '',
+        description: this.project?.description ?? '',
+        status: this.project?.status ?? 'active',
+      }
+    },
   },
   methods: {
-    onSubmit(value) {
-      console.log('submit', value)
-    },
-    validator(value, rules) {
-      return inputValidate(value, rules)
+    inputValidate,
+    async onSubmit(value) {
+      const projectId = this.project?.id
+      const action = projectId ? 'projects/patch' : 'projects/post'
+      const payload = projectId ? {id: projectId, projectData: value} : value
+
+      try {
+        const resp = await this.$store.dispatch(action, payload)
+        if (resp?.id) {
+          this.$emit('close')
+        }
+      } catch (error) {
+        await this.$store.dispatch('toasts/createToast', '儲存失敗')
+      }
     },
   },
 }
 </script>
 
 <template>
-  <FormProvider v-slot="{handleSubmit}" :default-values="defaultValues" :on-submit="onSubmit">
+  <FormProvider v-slot="{handleSubmit, formMessage}" :default-values="defaultValues" :on-submit="onSubmit">
     <FormField v-slot="{field}"
-               :validate="(v)=>validator(v,['required', ['maxLength', '20']])"
+               :validate="(v)=>inputValidate(v,['required', ['maxLength', 20]])"
                name="name">
       <v-text-field :error="!!field.state?.error"
                     :error-messages="field.state?.error"
@@ -80,6 +87,7 @@ export default {
           @input="field.handleChange"
       ></v-select>
     </FormField>
+    <div class="text-center text-accent-rose text-sm">{{ formMessage }}</div>
     <div class="flex justify-center align-center p-4 gap-10">
       <v-btn :style="{color: 'white'}"
              color="accent-peach-dark"
@@ -90,7 +98,7 @@ export default {
       </v-btn>
       <v-btn elevation="2"
              x-large
-             @click="closeModal"
+             @click="()=>$emit('close')"
       >
         取消
       </v-btn>

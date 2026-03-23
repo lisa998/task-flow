@@ -7,6 +7,8 @@ export default {
         loading: {
             getAll: false,
             delete: false,
+            post: false,
+            patch: false,
         },
         error: null,
     },
@@ -34,11 +36,36 @@ export default {
                 const resp = await fetchWithHandler(`/api/projects/${id}`, {method: 'delete'})
                 if (resp?.success) {
                     await this.dispatch('projects/getAll');
-                    console.log(resp)
                     this.dispatch('toasts/createToast', '專案已刪除');
                 }
             });
-        }
+        },
+        async post({commit}, projectData) {
+            return await withLoading(commit, 'post', async () => {
+                const resp = await fetchWithHandler(`/api/projects`, {
+                    method: 'post',
+                    body: JSON.stringify(projectData)
+                })
+                if (resp) {
+                    await this.dispatch('projects/getAll');
+                    this.dispatch('toasts/createToast', '專案已新增');
+                    return resp
+                }
+            });
+        },
+        async patch({commit}, {id, projectData}) {
+            return await withLoading(commit, 'patch', async () => {
+                const resp = await fetchWithHandler(`/api/projects/${id}`, {
+                    method: 'patch',
+                    body: JSON.stringify(projectData)
+                })
+                if (resp) {
+                    await this.dispatch('projects/getAll');
+                    this.dispatch('toasts/createToast', '專案已更新');
+                    return resp
+                }
+            });
+        },
     },
     getters: {}
 }
