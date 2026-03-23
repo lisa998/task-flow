@@ -1,9 +1,8 @@
 <script>
 import UserMenu from "@/components/layout/UserMenu.vue";
 import NotificationDropdown from "@/components/layout/NotificationDropdown.vue";
-import colors from "@/assets/theme/colors.json";
 
-const headerGradient = `to top right, ${colors["hero-gradient-start"]}, ${colors["hero-gradient-end"]}`;
+const headerGradient = `to top right, rgba(55, 236, 186, 0.7), rgba(25, 32, 72, 0.7)`;
 
 export default {
   name: "AppHeader",
@@ -33,7 +32,7 @@ export default {
 </script>
 
 <template>
-  <v-card class="overflow-hidden flex-grow ">
+  <v-card class="overflow-hidden w-full">
     <v-app-bar
         color="primary"
         dark
@@ -84,6 +83,7 @@ export default {
         id="scrolling-techniques-5"
         class="overflow-y-auto"
         max-height="calc(100vh - 128px)"
+
     >
       <v-container style="min-height: calc(100vh - 128px)">
         <router-view/>

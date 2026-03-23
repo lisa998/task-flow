@@ -10,7 +10,10 @@ export default new Vuetify({
             customProperties: true
         },
         themes: {
-            light: colors,
+            light: {
+                ...colors,
+                error: '#dc987f',
+            },
         },
     }
 });

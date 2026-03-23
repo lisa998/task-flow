@@ -1,15 +1,18 @@
 <template>
   <v-app>
-    <v-main>
-      <router-view/>
-    </v-main>
+    <router-view/>
+    <ToastList/>
+    <portal-target name="modals"/>
   </v-app>
 </template>
 
 <script>
 
+import ToastList from "@/components/molecules/ToastList.vue";
+
 export default {
   name: 'App',
+  components: {ToastList},
   data: () => ({
     //
   }),

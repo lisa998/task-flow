@@ -5,12 +5,14 @@ import vuetify from './plugins/vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import '@/assets/css/main.css'
 import VueRouter from "vue-router";
+import PortalVue from 'portal-vue'
 
 import {routes} from "@/router";
 import store from "@/store";
 
 
 Vue.config.productionTip = false
+Vue.use(PortalVue)
 
 const router = new VueRouter({
     routes,
