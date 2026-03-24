@@ -1,14 +1,7 @@
 <script>
 import {formatRelativeTime} from "@/utils/dateText";
 import EmptyState from "@/components/molecules/EmptyState.vue";
-import colors from "@/assets/theme/colors.json";
-
-const priorityColors = Object.freeze({
-  urgent: colors["accent-rose"],
-  high: colors["accent-peach"],
-  medium: colors["accent-yellow"],
-  low: "rgba(67, 160, 140, 0.65)",
-});
+import {priorityColors} from '@/assets/theme/colorSetting'
 
 export default {
   name: "DashboardPage",
