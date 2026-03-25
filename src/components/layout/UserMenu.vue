@@ -7,11 +7,14 @@ export default {
         {title: 'Profile', icon: 'mdi-account'},
         {title: 'Settings', icon: 'mdi-cog', link: '/settings'},
         {
-          title: 'Logout', icon: 'mdi-logout', action: () => {
-            console.log('logout')
-          }
+          title: 'Logout', icon: 'mdi-logout', action: this.logout
         },
       ],
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
     }
   },
 }

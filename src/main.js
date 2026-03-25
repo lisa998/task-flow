@@ -14,9 +14,33 @@ import store from "@/store";
 Vue.config.productionTip = false
 Vue.use(PortalVue)
 
-const router = new VueRouter({
+export const router = new VueRouter({
     routes,
     mode: 'history'
+})
+
+// eslint-disable-next-line no-unused-vars
+router.beforeEach(async (to, from, next) => {
+    try {
+        await store.dispatch("auth/getUser");
+    } catch (error) {
+        console.log("Error fetching user:", error);
+    }
+
+    const user = store.state.auth.user
+    const isAuthenticated = !!user?.id
+
+    if (to.matched.some(record => record.meta?.requiresAuth) && !isAuthenticated) {
+        return next({
+            path: '/login',
+            query: {redirect: to.fullPath},
+        })
+    }
+    if (to.matched.some(record => record.meta?.guestOnly) && isAuthenticated) {
+        return next('/')
+    }
+
+    next()
 })
 
 Vue.use(VueRouter)

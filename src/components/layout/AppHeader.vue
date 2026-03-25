@@ -24,6 +24,9 @@ export default {
       const segments = path.split('/').filter(Boolean)
       return segments.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join('/')
     },
+    user() {
+      return this.$store.state.auth.user
+    }
   },
   async mounted() {
     await this.$store.dispatch("notifications/fetchNotifications");
@@ -73,7 +76,7 @@ export default {
           <v-avatar class="rounded-circle" size="24">
             <img alt="" src="https://picsum.photos/200/200?random"/>
           </v-avatar>
-          <span class="mx-2">name</span>
+          <span class="mx-2">{{ user?.name }}</span>
           <v-icon>mdi-menu-down</v-icon>
         </v-btn>
       </div>

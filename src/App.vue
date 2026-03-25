@@ -16,9 +16,9 @@ export default {
   data: () => ({
     //
   }),
-  created() {
-    this.$store.dispatch("notifications/fetchNotifications");
-    this.$store.dispatch("dashboard/fetchDashboard");
+  async created() {
+    await this.$store.dispatch("notifications/fetchNotifications");
+    await this.$store.dispatch("dashboard/fetchDashboard");
   }
 };
 </script>

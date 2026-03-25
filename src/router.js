@@ -31,8 +31,15 @@ export const routes = [
             },
             {path: '/reports', component: ReportsPage},
             {path: '/settings', component: SettingsPage},
-        ]
+        ],
+        meta: {requiresAuth: true}
     },
-    {path: '/login', component: LoginPage},
+    {
+        path: '/login',
+        component: LoginPage,
+        meta: {
+            guestOnly: true,
+        }
+    },
     {path: '*', component: NotFoundPage},
 ]

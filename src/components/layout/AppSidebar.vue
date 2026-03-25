@@ -11,6 +11,11 @@ export default {
       ],
     }
   },
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
+    }
+  }
 }
 </script>
 
@@ -46,7 +51,7 @@ export default {
 
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block>
+          <v-btn block @click="logout">
             Logout
             <v-icon class="ml-2" size="20">mdi-logout</v-icon>
           </v-btn>
